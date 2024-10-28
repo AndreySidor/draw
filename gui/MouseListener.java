@@ -85,18 +85,18 @@ public class MouseListener extends MouseAdapter {
 			Shape tmp = c.getDrawing().getShapeAt(startPos);
 
 			if (((m.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0)
-					&& !c.getSelection().contains(tmp)) {
-				c.getSelection().empty();
+					&& !c.selectionContains(tmp)) {
+				c.clearSelection();
 			}
 
-			if ((tmp != null) && (!c.getSelection().contains(tmp))) {
+			if ((tmp != null) && (!c.selectionContains(tmp))) {
 
 				// empty the selection before selecting a new shape if shift is
 				// not down
 
 				tools.setColor(tmp.getColor());
 
-				if ((c.getSelection().isEmpty())
+				if ((c.hasSelections())
 						&& (tmp instanceof FillableShape)) {
 					tools.setFill(((FillableShape) tmp).getFilled());
 				}
@@ -105,7 +105,7 @@ public class MouseListener extends MouseAdapter {
 					tools.setFontSize(((Text) tmp).getFont().getSize());
 				}
 
-				c.getSelection().add(tmp);
+				c.select(tmp);
 
 			}
 

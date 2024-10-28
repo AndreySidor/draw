@@ -11,14 +11,12 @@ public class DrawingController {
 
 	private Drawing drawing;
 	private UndoManager undoManager;
-	private Selection selection;
 	private DrawGUI gui;
 	private Tool tool;
 
 	public DrawingController(DrawGUI g) {
 		drawing = null;
 		undoManager = new UndoManager();
-		selection = new Selection();
 		gui = g;
 		tool = Tool.LINE;
 	}
@@ -31,37 +29,61 @@ public class DrawingController {
 	}
 
 	public void colorSelectedShapes(Color c) {
-		ColorAction action = new ColorAction(selection, c);
+		ColorAction action = new ColorAction(drawing.getSelection(), c);
 		if (action.execute()) {
 			undoManager.addAction(action);
 		}
 	}
 
 	public void deleteSelectedShapes() {
-		DrawAction action = new DeleteAction(drawing, selection);
+		DrawAction action = new DeleteAction(drawing, drawing.getSelection());
 		if (action.execute()) {
 			undoManager.addAction(action);
 			drawing.repaint();
 		}
 	}
 
+	public void moveSelectedShapes(Point movement) {
+		DrawAction action = new MoveAction(drawing.getSelection(), movement);
+		if (action.execute()) {
+			undoManager.addAction(action);
+		}
+	}
+
+	public void toggleFilled() {
+		DrawAction action = new FillAction(drawing.getSelection());
+		if (action.execute()) {
+			undoManager.addAction(action);
+		}
+	}
+
+	public void selectAll() {
+		drawing.selectAll();
+		drawing.repaint();
+	}
+
+	public void select(Shape shape) {
+		drawing.select(shape);
+	}
+
+	public void clearSelection() {
+		drawing.clearSelection();
+	}
+
+	public Boolean hasSelections() {
+		return drawing.hasSelections();
+	}
+
+	public Boolean selectionContains(Shape shape) {
+		return drawing.selectionContains(shape);
+	}
+
 	public Drawing getDrawing() {
 		return drawing;
 	}
 
-	public Selection getSelection() {
-		return selection;
-	}
-
 	public Tool getTool() {
 		return tool;
-	}
-
-	public void moveSelectedShapes(Point movement) {
-		DrawAction action = new MoveAction(selection, movement);
-		if (action.execute()) {
-			undoManager.addAction(action);
-		}
 	}
 
 	public void endOfActionRecording() {
@@ -75,31 +97,15 @@ public class DrawingController {
 		}
 	}
 
+	public void setTool(Tool t) {
+		this.tool = t;
+	}
+
 	public void redo() {
 		if (this.undoManager.canRedo()) {
 			this.undoManager.redo();
 		}
 		drawing.repaint();
-	}
-
-	public void selectAll() {
-		selection.empty();
-		for (Shape sh : drawing) {
-			selection.add(sh);
-		}
-		drawing.repaint();
-
-	}
-
-	public void setTool(Tool t) {
-		this.tool = t;
-	}
-
-	public void toggleFilled() {
-		DrawAction action = new FillAction(selection);
-		if (action.execute()) {
-			undoManager.addAction(action);
-		}
 	}
 
 	public void undo() {

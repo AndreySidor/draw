@@ -1,32 +1,16 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import logic.DrawingController;
+import logic.Tool;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
-import javax.swing.Box;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import logic.DrawingController;
-import logic.Tool;
 
 public class ToolBox extends JToolBar implements ActionListener,
 		ChangeListener, ItemListener {
@@ -168,7 +152,7 @@ public class ToolBox extends JToolBar implements ActionListener,
 			c.setTool(Tool.SELECT);
 		}
 		else if (!source.equals(colorbutton)) {
-			c.getSelection().empty();
+			c.clearSelection();
 			c.getDrawing().repaint();
 		}
 

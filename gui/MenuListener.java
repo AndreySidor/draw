@@ -1,19 +1,16 @@
 package gui;
 
 import gui.MainMenu.NewDrawingDialog;
+import logic.DrawIO;
+import logic.DrawingController;
 
-import java.awt.Dimension;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import logic.DrawIO;
-import logic.DrawingController;
 
 /**
  * Listens to actions from the buttons in a menu and modifies the Drawing
@@ -57,7 +54,7 @@ public class MenuListener implements ActionListener {
 		}
 
 		else if (cmd.equals("Clear selection")) {
-			controller.getSelection().empty();
+			controller.clearSelection();
 			controller.getDrawing().repaint();
 		}
 

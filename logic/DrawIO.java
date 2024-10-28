@@ -1,30 +1,20 @@
 package logic;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-
-import shapes.Circle;
-import shapes.Line;
 import shapes.Rectangle;
 import shapes.Shape;
-import shapes.Text;
+import shapes.*;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 public class DrawIO {
 
 	public void export(File f, DrawingController c) {
 		try {
-			c.getSelection().empty();
+			c.clearSelection();
 			BufferedImage bi = c.getDrawing().getImage(); // retrieve image
 			ImageIO.write(bi, "png", f);
 		}

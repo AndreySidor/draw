@@ -1,27 +1,22 @@
 package logic;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
+import shapes.Shape;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-
-import shapes.Shape;
 
 public class Drawing extends JPanel implements Iterable<Shape> {
 
 	private static final long serialVersionUID = 0;
 
-	private ArrayList<Shape> shapes;
+	private ArrayList<Shape> shapes = new ArrayList<>();
+
+	private Selection selection = new Selection();
 
 	public Drawing(Dimension size) {
-		shapes = new ArrayList<Shape>(0);
-
 		this.setPreferredSize(size);
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		setBackground(Color.WHITE);
@@ -46,7 +41,33 @@ public class Drawing extends JPanel implements Iterable<Shape> {
 			index--;
 		}
 		return null;
+	}
 
+	public Selection getSelection() {
+		return selection;
+	}
+
+	public void selectAll() {
+		selection.empty();
+		shapes.forEach(item -> {
+			selection.add(item);
+		});
+	}
+
+	public void select(Shape shape) {
+		selection.add(shape);
+	}
+
+	public void clearSelection() {
+		selection.empty();
+	}
+
+	public Boolean selectionContains(Shape shape) {
+		return selection.contains(shape);
+	}
+
+	public Boolean hasSelections() {
+		return selection.isEmpty();
 	}
 
 	public void insertShape(Shape s) {
