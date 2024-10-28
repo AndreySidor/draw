@@ -22,8 +22,12 @@ public class AddAction extends BaseShapesAction implements DrawAction {
 		this.shape = shape;
 	}
 
-	public void execute() {
-		drawing.insertShape(shape);
+	public Boolean execute() {
+		Boolean checkForExecution = shape != null && drawing != null;
+		if (checkForExecution) {
+			drawing.insertShape(shape);
+		}
+		return checkForExecution;
 	}
 
 	public void redo() {

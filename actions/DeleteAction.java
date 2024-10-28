@@ -21,10 +21,14 @@ public class DeleteAction extends BaseAction implements DrawAction {
 		super(drawing, selection.clone());
 	}
 
-	public void execute() {
-		for (Shape s : selection) {
-			drawing.removeShape(s);
+	public Boolean execute() {
+		Boolean checkForExecution = selection != null && !selection.isEmpty() && drawing != null;
+		if (checkForExecution) {
+			for (Shape s : selection) {
+				drawing.removeShape(s);
+			}
 		}
+		return checkForExecution;
 	}
 
 	public void redo() {

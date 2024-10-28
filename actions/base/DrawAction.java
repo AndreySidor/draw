@@ -13,7 +13,7 @@ public interface DrawAction {
 	/**
 	 * This method performs the original action.
 	 */
-	public void execute();
+	public Boolean execute();
 
 	/**
 	 * Returns a brief explanation of the action. Can be used for example to

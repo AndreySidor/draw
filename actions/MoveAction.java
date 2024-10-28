@@ -24,10 +24,15 @@ public class MoveAction extends BaseSelectionsAction implements DrawAction {
 		this.movement = movement;
 	}
 
-	public void execute() {
-		for (Shape s : selection) {
-			s.move(movement.x, movement.y);
+	public Boolean execute() {
+		Boolean checkForExecution = selection != null && !selection.isEmpty() && movement != null
+				&& (movement.x != 0 || movement.y != 0);
+		if (checkForExecution) {
+			for (Shape s : selection) {
+				s.move(movement.x, movement.y);
+			}
 		}
+		return checkForExecution;
 	}
 
 	public void redo() {

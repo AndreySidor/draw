@@ -31,10 +31,16 @@ public class ColorAction extends BaseSelectionsAction implements DrawAction {
 		this.newColor = newColor;
 	}
 
-	public void execute() {
-		this.selection.forEach(item -> {
-			item.setColor(newColor);
-		});
+	public Boolean execute() {
+		Boolean checkForExecution = selection != null && !selection.isEmpty() && newColor != null;
+		if (checkForExecution) {
+			if (checkForExecution) {
+				this.selection.forEach(item -> {
+					item.setColor(newColor);
+				});
+			}
+		}
+		return checkForExecution;
 	}
 
 	public void redo() {

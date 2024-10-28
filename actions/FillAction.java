@@ -19,13 +19,17 @@ public class FillAction extends BaseSelectionsAction implements DrawAction {
 		super(selection.clone());
 	}
 
-	public void execute() {
-		for (Shape s : selection) {
-			if (s instanceof FillableShape) {
-				FillableShape fs = (FillableShape) s;
-				fs.setFilled(!(fs).getFilled());
+	public Boolean execute() {
+		Boolean checkForExecution = selection != null && !selection.isEmpty();
+		if (checkForExecution) {
+			for (Shape s : selection) {
+				if (s instanceof FillableShape) {
+					FillableShape fs = (FillableShape) s;
+					fs.setFilled(!(fs).getFilled());
+				}
 			}
 		}
+		return checkForExecution;
 	}
 
 	public void redo() {
