@@ -1,44 +1,30 @@
 package actions;
 
+import actions.base.BaseAction;
+import actions.base.BaseShapesAction;
+import actions.base.DrawAction;
 import logic.Drawing;
 import logic.Selection;
 import shapes.Shape;
 
 /**
- * DeleteAction implements a single undoable action where all Shapes in a given
- * Selection are added to a Drawing.
+ * Удаление выбранных фигур с рисунка
  */
-public class DeleteAction implements DrawAction {
-
-	Drawing d;
-	Selection selection;
-
-	int position;
+public class DeleteAction extends BaseAction implements DrawAction {
 
 	/**
-	 * Creates an DeleteAction that removes all shapes in the given Selection
-	 * from the given Drawing.
-	 * 
-	 * @param drawing
-	 *            the drawing into which the shape should be added.
-	 * @param selection
-	 *            the shape to be added.
+	 * Конструктор
+	 * @param drawing - полотно
+	 * @param selection - выбранные фигуры
 	 */
 	public DeleteAction(Drawing drawing, Selection selection) {
-		// The selection need to be hard-copied because the selection behind the
-		// reference will change while editing the drawing.
-		this.selection = selection.clone();
-		this.d = drawing;
+		super(drawing, selection.clone());
 	}
 
 	public void execute() {
 		for (Shape s : selection) {
-			d.removeShape(s);
+			drawing.removeShape(s);
 		}
-	}
-
-	public String getDescription() {
-		return null;
 	}
 
 	public void redo() {
@@ -47,8 +33,12 @@ public class DeleteAction implements DrawAction {
 
 	public void undo() {
 		for (Shape s : selection) {
-			d.insertShape(s);
+			drawing.insertShape(s);
 		}
+	}
+
+	public String getDescription() {
+		return null;
 	}
 
 }

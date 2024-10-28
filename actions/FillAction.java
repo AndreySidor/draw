@@ -1,39 +1,31 @@
 package actions;
 
+import actions.base.BaseSelectionsAction;
+import actions.base.DrawAction;
 import logic.Selection;
 import shapes.FillableShape;
 import shapes.Shape;
 
 /**
- * FillAction implements a undoable action where the fill status of all the
- * Shapes in a given Selection are toggled.
+ * Заливка выбранных фигур
  */
-public class FillAction implements DrawAction {
-
-	Selection selected;
+public class FillAction extends BaseSelectionsAction implements DrawAction {
 
 	/**
-	 * Creates a FillAction that filps the fill status of all FillableShape
-	 * instances in the given selection.
-	 * 
-	 * @param s
-	 *            a selection which contains the shapes to be modified
+	 * Конструктор
+	 * @param selection - выбранные фигуры
 	 */
-	public FillAction(Selection s) {
-		this.selected = s.clone();
+	public FillAction(Selection selection) {
+		super(selection.clone());
 	}
 
 	public void execute() {
-		for (Shape s : selected) {
+		for (Shape s : selection) {
 			if (s instanceof FillableShape) {
 				FillableShape fs = (FillableShape) s;
 				fs.setFilled(!(fs).getFilled());
 			}
 		}
-	}
-
-	public String getDescription() {
-		return null;
 	}
 
 	public void redo() {
@@ -42,6 +34,10 @@ public class FillAction implements DrawAction {
 
 	public void undo() {
 		execute();
+	}
+
+	public String getDescription() {
+		return null;
 	}
 
 }

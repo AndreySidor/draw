@@ -1,4 +1,4 @@
-package actions;
+package actions.base;
 
 /**
  * This interface depicts a single undoable drawing action.

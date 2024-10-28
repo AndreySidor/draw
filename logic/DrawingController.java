@@ -10,7 +10,7 @@ import shapes.Shape;
 import actions.AddAction;
 import actions.ColorAction;
 import actions.DeleteAction;
-import actions.DrawAction;
+import actions.base.DrawAction;
 import actions.FillAction;
 import actions.MoveAction;
 import actions.UndoManager;
@@ -39,10 +39,10 @@ public class DrawingController {
 	}
 
 	public void colorSelectedShapes(Color c) {
-		for (Shape s : selection) {
-			DrawAction col = new ColorAction(s, c);
-			col.execute();
-			undoManager.addAction(col);
+		if (!selection.isEmpty()) {
+			ColorAction action = new ColorAction(selection, c);
+			action.execute();
+			undoManager.addAction(action);
 		}
 	}
 
