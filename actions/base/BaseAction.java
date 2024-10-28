@@ -3,7 +3,7 @@ package actions.base;
 import logic.Drawing;
 import logic.Selection;
 
-public abstract class BaseAction {
+public abstract class BaseAction implements DrawAction {
 
     protected Drawing drawing;
 

@@ -1,18 +1,17 @@
 package actions;
 
-import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
-
 import actions.base.BaseSelectionsAction;
-import actions.base.DrawAction;
 import logic.Selection;
 import shapes.Shape;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Меняет цвет выбранных фигур
  */
-public class ColorAction extends BaseSelectionsAction implements DrawAction {
+public class ColorAction extends BaseSelectionsAction {
 
 	private Map<Shape, Color> oldColors = new HashMap<>();
 

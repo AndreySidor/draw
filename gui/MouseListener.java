@@ -1,18 +1,15 @@
 package gui;
 
-import java.awt.Point;
+import logic.DrawingController;
+import logic.Tool;
+import shapes.Rectangle;
+import shapes.Shape;
+import shapes.*;
+
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import logic.DrawingController;
-import logic.Tool;
-import shapes.Circle;
-import shapes.FillableShape;
-import shapes.Line;
-import shapes.Rectangle;
-import shapes.Shape;
-import shapes.Text;
 
 /**
  * MouseListener listens to the mouse events in a drawing and modifies the
@@ -64,9 +61,7 @@ public class MouseListener extends MouseAdapter {
 		}
 
 		if (c.getTool() == Tool.SELECT) {
-			for (Shape s : c.getSelection()) {
-				s.move(mouseDelta.x, mouseDelta.y);
-			}
+			c.moveSelectedShapes(new Point(mouseDelta.x, mouseDelta.y));
 		}
 
 		c.getDrawing().repaint();
@@ -152,7 +147,7 @@ public class MouseListener extends MouseAdapter {
 					- startPos.y);
 
 			if ((total.x != 0) || (total.y != 0)) {
-				c.recordMovement(total);
+				c.endOfActionRecording();
 			}
 
 		}

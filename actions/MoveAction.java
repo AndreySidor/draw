@@ -1,18 +1,19 @@
 package actions;
 
-import java.awt.Point;
-
 import actions.base.BaseSelectionsAction;
-import actions.base.DrawAction;
 import logic.Selection;
 import shapes.Shape;
+
+import java.awt.*;
 
 /**
  * Перемещение выбранных фигур
  */
-public class MoveAction extends BaseSelectionsAction implements DrawAction {
+public class MoveAction extends BaseSelectionsAction implements MergeableAction {
 
 	Point movement;
+
+	Boolean canMerge = true;
 
 	/**
 	 * Конструктор
@@ -33,6 +34,26 @@ public class MoveAction extends BaseSelectionsAction implements DrawAction {
 			}
 		}
 		return checkForExecution;
+	}
+
+	@Override
+	public Boolean merge(MergeableAction action) {
+		Boolean checkForMerge = action instanceof MoveAction && canMerge;
+		if (checkForMerge) {
+			this.movement.x += ((MoveAction) action).movement.x;
+			this.movement.y += ((MoveAction) action).movement.y;
+		}
+		return checkForMerge;
+	}
+
+	@Override
+	public void stopMerge() {
+		canMerge = false;
+	}
+
+	@Override
+	public Boolean canMerge() {
+		return canMerge;
 	}
 
 	public void redo() {

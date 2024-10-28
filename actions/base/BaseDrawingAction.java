@@ -2,11 +2,11 @@ package actions.base;
 
 import logic.Drawing;
 
-public abstract class BaseShapesAction {
+public abstract class BaseDrawingAction implements DrawAction {
 
     protected Drawing drawing;
 
-    protected BaseShapesAction(Drawing drawing) {
+    protected BaseDrawingAction(Drawing drawing) {
         this.drawing = drawing;
     }
 

@@ -2,7 +2,7 @@ package actions.base;
 
 import logic.Selection;
 
-public abstract class BaseSelectionsAction {
+public abstract class BaseSelectionsAction implements DrawAction {
 
     protected Selection selection;
 

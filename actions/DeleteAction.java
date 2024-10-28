@@ -1,8 +1,6 @@
 package actions;
 
 import actions.base.BaseAction;
-import actions.base.BaseShapesAction;
-import actions.base.DrawAction;
 import logic.Drawing;
 import logic.Selection;
 import shapes.Shape;
@@ -10,7 +8,7 @@ import shapes.Shape;
 /**
  * Удаление выбранных фигур с рисунка
  */
-public class DeleteAction extends BaseAction implements DrawAction {
+public class DeleteAction extends BaseAction {
 
 	/**
 	 * Конструктор

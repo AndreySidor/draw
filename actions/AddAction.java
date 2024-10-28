@@ -1,14 +1,13 @@
 package actions;
 
-import actions.base.BaseShapesAction;
-import actions.base.DrawAction;
+import actions.base.BaseDrawingAction;
 import logic.Drawing;
 import shapes.Shape;
 
 /**
  * Добавление фигуры на рисунок
  */
-public class AddAction extends BaseShapesAction implements DrawAction {
+public class AddAction extends BaseDrawingAction {
 
 	Shape shape;
 

@@ -1,7 +1,6 @@
 package actions;
 
 import actions.base.BaseSelectionsAction;
-import actions.base.DrawAction;
 import logic.Selection;
 import shapes.FillableShape;
 import shapes.Shape;
@@ -9,7 +8,7 @@ import shapes.Shape;
 /**
  * Заливка выбранных фигур
  */
-public class FillAction extends BaseSelectionsAction implements DrawAction {
+public class FillAction extends BaseSelectionsAction {
 
 	/**
 	 * Конструктор
