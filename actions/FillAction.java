@@ -2,8 +2,6 @@ package actions;
 
 import actions.base.BaseSelectionsAction;
 import logic.Selection;
-import shapes.FillableShape;
-import shapes.Shape;
 
 /**
  * Заливка выбранных фигур
@@ -21,12 +19,7 @@ public class FillAction extends BaseSelectionsAction {
 	public Boolean execute() {
 		Boolean checkForExecution = selection != null && !selection.isEmpty();
 		if (checkForExecution) {
-			for (Shape s : selection) {
-				if (s instanceof FillableShape) {
-					FillableShape fs = (FillableShape) s;
-					fs.setFilled(!(fs).getFilled());
-				}
-			}
+			selection.changeFilling();
 		}
 		return checkForExecution;
 	}

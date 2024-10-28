@@ -74,6 +74,10 @@ public class Drawing extends JPanel implements Iterable<Shape> {
 		shapes.add(s);
 	}
 
+	public void removeSelected() {
+		selection.forEach(this::removeShape);
+	}
+
 	@Override
 	public Iterator<Shape> iterator() {
 		return shapes.iterator();

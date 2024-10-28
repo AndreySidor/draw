@@ -3,7 +3,6 @@ package actions;
 import actions.base.BaseAction;
 import logic.Drawing;
 import logic.Selection;
-import shapes.Shape;
 
 /**
  * Удаление выбранных фигур с рисунка
@@ -22,9 +21,7 @@ public class DeleteAction extends BaseAction {
 	public Boolean execute() {
 		Boolean checkForExecution = selection != null && !selection.isEmpty() && drawing != null;
 		if (checkForExecution) {
-			for (Shape s : selection) {
-				drawing.removeShape(s);
-			}
+			drawing.removeSelected();
 		}
 		return checkForExecution;
 	}
@@ -34,9 +31,7 @@ public class DeleteAction extends BaseAction {
 	}
 
 	public void undo() {
-		for (Shape s : selection) {
-			drawing.insertShape(s);
-		}
+		selection.forEach(drawing::insertShape);
 	}
 
 	public String getDescription() {

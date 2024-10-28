@@ -2,7 +2,6 @@ package actions;
 
 import actions.base.BaseSelectionsAction;
 import logic.Selection;
-import shapes.Shape;
 
 import java.awt.*;
 
@@ -29,9 +28,7 @@ public class MoveAction extends BaseSelectionsAction implements MergeableAction 
 		Boolean checkForExecution = selection != null && !selection.isEmpty() && movement != null
 				&& (movement.x != 0 || movement.y != 0);
 		if (checkForExecution) {
-			for (Shape s : selection) {
-				s.move(movement.x, movement.y);
-			}
+			selection.move(movement);
 		}
 		return checkForExecution;
 	}
@@ -40,8 +37,7 @@ public class MoveAction extends BaseSelectionsAction implements MergeableAction 
 	public Boolean merge(MergeableAction action) {
 		Boolean checkForMerge = action instanceof MoveAction && canMerge;
 		if (checkForMerge) {
-			this.movement.x += ((MoveAction) action).movement.x;
-			this.movement.y += ((MoveAction) action).movement.y;
+			movement.translate(((MoveAction) action).movement.x, ((MoveAction) action).movement.y);
 		}
 		return checkForMerge;
 	}
@@ -61,9 +57,7 @@ public class MoveAction extends BaseSelectionsAction implements MergeableAction 
 	}
 
 	public void undo() {
-		for (Shape s : selection) {
-			s.move(-movement.x, -movement.y);
-		}
+		selection.move(new Point(-movement.x, -movement.y));
 	}
 
 	public String getDescription() {

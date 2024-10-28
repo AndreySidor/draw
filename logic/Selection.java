@@ -1,9 +1,11 @@
 package logic;
 
+import shapes.FillableShape;
+import shapes.Shape;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import shapes.Shape;
 
 public class Selection implements Iterable<Shape> {
 
@@ -51,6 +53,23 @@ public class Selection implements Iterable<Shape> {
 
 	public int nShapes() {
 		return selected.size();
+	}
+
+	public void paint(Color color) {
+		selected.forEach(item -> item.setColor(color));
+	}
+
+	public void changeFilling() {
+		selected.forEach(item -> {
+			if (item instanceof FillableShape) {
+				FillableShape fs = (FillableShape) item;
+				fs.setFilled(!(fs).getFilled());
+			}
+		});
+	}
+
+	public void move(Point movement) {
+		selected.forEach(item -> item.move(movement.x, movement.y));
 	}
 
 	public String toString() {

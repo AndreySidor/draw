@@ -33,11 +33,7 @@ public class ColorAction extends BaseSelectionsAction {
 	public Boolean execute() {
 		Boolean checkForExecution = selection != null && !selection.isEmpty() && newColor != null;
 		if (checkForExecution) {
-			if (checkForExecution) {
-				this.selection.forEach(item -> {
-					item.setColor(newColor);
-				});
-			}
+			this.selection.paint(newColor);
 		}
 		return checkForExecution;
 	}
@@ -47,9 +43,7 @@ public class ColorAction extends BaseSelectionsAction {
 	}
 
 	public void undo() {
-		this.selection.forEach(item -> {
-			item.setColor(this.oldColors.get(item));
-		});
+		oldColors.forEach(Shape::setColor);
 	}
 
 	public String getDescription() {
