@@ -15,7 +15,7 @@ public class DrawIO {
 	public void export(File f, DrawingController c) {
 		try {
 			c.clearSelection();
-			BufferedImage bi = c.getDrawing().getImage(); // retrieve image
+			BufferedImage bi = null; // retrieve image
 			ImageIO.write(bi, "png", f);
 		}
 		catch (IOException e) {
@@ -79,7 +79,7 @@ public class DrawIO {
 						sh
 								.setColor(new Color(Integer.parseInt(parts[3]
 										.trim())));
-						c.getDrawing().insertShape(sh);
+						c.getVectorDrawing().insertShape(sh);
 					}
 				}
 				catch (ArrayIndexOutOfBoundsException e) {
@@ -101,15 +101,15 @@ public class DrawIO {
 	}
 
 	public void save(File f, DrawingController c) {
-		Drawing d = c.getDrawing();
+		VectorDrawing d = c.getVectorDrawing();
 
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(f));
 
-			out.write(d.getPreferredSize().width + ","
-					+ d.getPreferredSize().height + "\n");
+			out.write(d.getDimension().width + ","
+					+ d.getDimension().height + "\n");
 
-			for (Shape s : c.getDrawing()) {
+			for (Shape s : c.getVectorDrawing()) {
 				out.write(s.toString() + "\n");
 			}
 			out.close();

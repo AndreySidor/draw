@@ -1,7 +1,7 @@
 package actions;
 
 import actions.base.BaseDrawingAction;
-import logic.Drawing;
+import logic.VectorDrawing;
 import shapes.Shape;
 
 /**
@@ -16,7 +16,7 @@ public class AddAction extends BaseDrawingAction {
 	 * @param drawing - полотно
 	 * @param shape - фигура
 	 */
-	public AddAction(Drawing drawing, Shape shape) {
+	public AddAction(VectorDrawing drawing, Shape shape) {
 		super(drawing);
 		this.shape = shape;
 	}

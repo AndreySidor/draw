@@ -2,84 +2,87 @@ package logic;
 
 import actions.*;
 import actions.base.DrawAction;
+import gui.CanRepaintComponent;
+import gui.ChangingPanel;
 import gui.DrawGUI;
 import shapes.Shape;
 
 import java.awt.*;
 
-public class DrawingController {
+public class DrawingController implements ChangingPanel {
 
-	private Drawing drawing;
+	private CanRepaintComponent changeablePanel;
+	private VectorDrawing vectorDrawing;
 	private UndoManager undoManager;
 	private DrawGUI gui;
 	private Tool tool;
 
 	public DrawingController(DrawGUI g) {
-		drawing = null;
+		vectorDrawing = null;
 		undoManager = new UndoManager();
 		gui = g;
 		tool = Tool.LINE;
 	}
 
 	public void addShape(Shape s) {
-		DrawAction action = new AddAction(drawing, s);
+		DrawAction action = new AddAction(vectorDrawing, s);
 		if (action.execute()) {
 			undoManager.addAction(action);
 		}
 	}
 
 	public void colorSelectedShapes(Color c) {
-		ColorAction action = new ColorAction(drawing.getSelection(), c);
+		ColorAction action = new ColorAction(vectorDrawing.getSelection(), c);
 		if (action.execute()) {
 			undoManager.addAction(action);
 		}
 	}
 
 	public void deleteSelectedShapes() {
-		DrawAction action = new DeleteAction(drawing, drawing.getSelection());
+		DrawAction action = new DeleteAction(vectorDrawing, vectorDrawing.getSelection());
 		if (action.execute()) {
 			undoManager.addAction(action);
-			drawing.repaint();
+			fireChangingPanel();
 		}
 	}
 
 	public void moveSelectedShapes(Point movement) {
-		DrawAction action = new MoveAction(drawing.getSelection(), movement);
+		DrawAction action = new MoveAction(vectorDrawing.getSelection(), movement);
 		if (action.execute()) {
 			undoManager.addAction(action);
 		}
 	}
 
 	public void toggleFilled() {
-		DrawAction action = new FillAction(drawing.getSelection());
+		DrawAction action = new FillAction(vectorDrawing.getSelection());
 		if (action.execute()) {
 			undoManager.addAction(action);
 		}
 	}
 
 	public void selectAll() {
-		drawing.selectAll();
-		drawing.repaint();
+		vectorDrawing.selectAll();
+		fireChangingPanel();
 	}
 
 	public void select(Shape shape) {
-		drawing.select(shape);
+		vectorDrawing.select(shape);
 	}
 
 	public void clearSelection() {
-		drawing.clearSelection();
+		vectorDrawing.clearSelection();
 	}
 
 	public Boolean hasSelections() {
-		return drawing.hasSelections();
+		return vectorDrawing.hasSelections();
 	}
 
 	public Boolean selectionContains(Shape shape) {
-		return drawing.selectionContains(shape);
+		return vectorDrawing.selectionContains(shape);
 	}
 
-	public Drawing getDrawing() {
-		return drawing;
+	public VectorDrawing getVectorDrawing() {
+		return vectorDrawing;
 	}
 
 	public Tool getTool() {
@@ -91,7 +94,7 @@ public class DrawingController {
 	}
 
 	public void newDrawing(Dimension size) {
-		drawing = new Drawing(size);
+		vectorDrawing = new VectorDrawing(size);
 		if (gui != null) {
 			gui.updateDrawing();
 		}
@@ -105,13 +108,30 @@ public class DrawingController {
 		if (this.undoManager.canRedo()) {
 			this.undoManager.redo();
 		}
-		drawing.repaint();
+		fireChangingPanel();
 	}
 
 	public void undo() {
 		if (this.undoManager.canUndo()) {
 			this.undoManager.undo();
 		}
-		drawing.repaint();
+		fireChangingPanel();
+	}
+
+	@Override
+	public void fireChangingPanel() {
+		if (changeablePanel != null) {
+			changeablePanel.repaintComponent();
+		}
+	}
+
+	@Override
+	public void registerChangeablePanel(CanRepaintComponent observer) {
+		changeablePanel = observer;
+	}
+
+	@Override
+	public void removeChangeablePanel(CanRepaintComponent observer) {
+		changeablePanel = null;
 	}
 }

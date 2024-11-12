@@ -2,33 +2,22 @@ package logic;
 
 import shapes.Shape;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Drawing extends JPanel implements Iterable<Shape> {
+public class VectorDrawing implements Iterable<Shape> {
 
 	private static final long serialVersionUID = 0;
+
+	private Dimension dimension;
 
 	private ArrayList<Shape> shapes = new ArrayList<>();
 
 	private Selection selection = new Selection();
 
-	public Drawing(Dimension size) {
-		this.setPreferredSize(size);
-		setBorder(BorderFactory.createLineBorder(Color.black));
-		setBackground(Color.WHITE);
-	}
-
-	public BufferedImage getImage() {
-
-		BufferedImage bi = new BufferedImage(getPreferredSize().width,
-				getPreferredSize().height, BufferedImage.TYPE_INT_RGB);
-		Graphics g = bi.createGraphics();
-		this.print(g);
-		return bi;
+	public VectorDrawing(Dimension size) {
+		dimension = size;
 	}
 
 	public Shape getShapeAt(Point p) {
@@ -45,6 +34,10 @@ public class Drawing extends JPanel implements Iterable<Shape> {
 
 	public Selection getSelection() {
 		return selection;
+	}
+
+	public Dimension getDimension() {
+		return dimension;
 	}
 
 	public void selectAll() {
@@ -103,12 +96,8 @@ public class Drawing extends JPanel implements Iterable<Shape> {
 		return shapes.size();
 	}
 
-	public void paintComponent(Graphics g) {
-
-		super.paintComponent(g);
-		for (Shape s : shapes) {
-			s.draw(g);
-		}
+	public void draw(Graphics g) {
+		shapes.forEach(shape -> shape.draw(g));
 	}
 
 	public void raise(Shape s) {

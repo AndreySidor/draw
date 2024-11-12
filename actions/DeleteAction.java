@@ -1,8 +1,8 @@
 package actions;
 
 import actions.base.BaseAction;
-import logic.Drawing;
 import logic.Selection;
+import logic.VectorDrawing;
 
 /**
  * Удаление выбранных фигур с рисунка
@@ -14,7 +14,7 @@ public class DeleteAction extends BaseAction {
 	 * @param drawing - полотно
 	 * @param selection - выбранные фигуры
 	 */
-	public DeleteAction(Drawing drawing, Selection selection) {
+	public DeleteAction(VectorDrawing drawing, Selection selection) {
 		super(drawing, selection.clone());
 	}
 

@@ -1,18 +1,10 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import logic.Drawing;
 import logic.DrawingController;
+import logic.VectorDrawing;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Graphical user interface for the Drawing editor "Draw"
@@ -34,17 +26,18 @@ public class DrawGUI extends JFrame {
 
 		private static final long serialVersionUID = 0;
 
+		private DrawingPanel drawingPanel;
+
 		public DrawingContainer() {
 			super(new GridBagLayout());
+			drawingPanel = new DrawingPanel();
+			add(drawingPanel);
 		}
 
-		public void setDrawing(Drawing d) {
-			this.removeAll();
-			this.add(d);
-			mouse = new MouseListener(controller, tools);
-			d.addMouseListener(mouse);
-			d.addMouseMotionListener(mouse);
-			setPreferredSize(d.getPreferredSize());
+		public void setVectorDrawing(VectorDrawing d) {
+			drawingPanel.removeAll();
+			drawingPanel.setVectorDrawing(d);
+			setPreferredSize(drawingPanel.getPreferredSize());
 			pack();
 		}
 
@@ -97,6 +90,13 @@ public class DrawGUI extends JFrame {
 		tools = new ToolBox(controller);
 		controller.newDrawing(new Dimension(500, 380));
 
+		mouse = new MouseListener(controller, tools);
+		drawingContainer.drawingPanel.addMouseListener(mouse);
+		drawingContainer.drawingPanel.addMouseMotionListener(mouse);
+
+		controller.registerChangeablePanel(drawingContainer.drawingPanel);
+
+
 		// statusBar = new StatusBar();
 
 		getContentPane().add(tools, BorderLayout.WEST);
@@ -118,7 +118,7 @@ public class DrawGUI extends JFrame {
 	 */
 	public void updateDrawing() {
 
-		drawingContainer.setDrawing(controller.getDrawing());
+		drawingContainer.setVectorDrawing(controller.getVectorDrawing());
 		scrollpane.setPreferredSize(new Dimension(drawingContainer
 				.getPreferredSize().width + 100, drawingContainer
 				.getPreferredSize().height + 100));

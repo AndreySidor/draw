@@ -1,12 +1,12 @@
 package actions.base;
 
-import logic.Drawing;
+import logic.VectorDrawing;
 
 public abstract class BaseDrawingAction implements DrawAction {
 
-    protected Drawing drawing;
+    protected VectorDrawing drawing;
 
-    protected BaseDrawingAction(Drawing drawing) {
+    protected BaseDrawingAction(VectorDrawing drawing) {
         this.drawing = drawing;
     }
 
