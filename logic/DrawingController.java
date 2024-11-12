@@ -11,7 +11,7 @@ public class DrawingController {
 
 	private Drawing drawing;
 	private UndoManager undoManager;
-	private DrawGUI gui;
+	public DrawGUI gui;
 	private Tool tool;
 
 	public DrawingController(DrawGUI g) {
@@ -39,7 +39,7 @@ public class DrawingController {
 		DrawAction action = new DeleteAction(drawing, drawing.getSelection());
 		if (action.execute()) {
 			undoManager.addAction(action);
-			drawing.repaint();
+			gui.drawingContainer.repaint();
 		}
 	}
 
@@ -59,7 +59,7 @@ public class DrawingController {
 
 	public void selectAll() {
 		drawing.selectAll();
-		drawing.repaint();
+		gui.drawingContainer.repaint();
 	}
 
 	public void select(Shape shape) {
@@ -105,13 +105,13 @@ public class DrawingController {
 		if (this.undoManager.canRedo()) {
 			this.undoManager.redo();
 		}
-		drawing.repaint();
+		gui.drawingContainer.repaint();
 	}
 
 	public void undo() {
 		if (this.undoManager.canUndo()) {
 			this.undoManager.undo();
 		}
-		drawing.repaint();
+		gui.drawingContainer.repaint();
 	}
 }

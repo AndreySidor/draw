@@ -64,7 +64,7 @@ public class MouseListener extends MouseAdapter {
 			c.moveSelectedShapes(new Point(mouseDelta.x, mouseDelta.y));
 		}
 
-		c.getDrawing().repaint();
+		c.gui.drawingContainer.repaint();
 
 		lastPos = m.getPoint();
 
@@ -109,7 +109,7 @@ public class MouseListener extends MouseAdapter {
 
 			}
 
-			c.getDrawing().repaint();
+			c.gui.drawingContainer.repaint();
 
 		}
 		else if (t == Tool.RECTANGLE) {
@@ -127,7 +127,7 @@ public class MouseListener extends MouseAdapter {
 			}
 			catch (IllegalArgumentException e) {
 			}
-			c.getDrawing().repaint();
+			c.gui.drawingContainer.repaint();
 		}
 
 		if (newShape != null) {

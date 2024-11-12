@@ -15,7 +15,7 @@ public class DrawIO {
 	public void export(File f, DrawingController c) {
 		try {
 			c.clearSelection();
-			BufferedImage bi = c.getDrawing().getImage(); // retrieve image
+			BufferedImage bi = c.gui.drawingContainer.getImage(); // retrieve image
 			ImageIO.write(bi, "png", f);
 		}
 		catch (IOException e) {
@@ -106,8 +106,8 @@ public class DrawIO {
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(f));
 
-			out.write(d.getPreferredSize().width + ","
-					+ d.getPreferredSize().height + "\n");
+			out.write(c.gui.drawingContainer.getPreferredSize().width + ","
+					+ c.gui.drawingContainer.getPreferredSize().height + "\n");
 
 			for (Shape s : c.getDrawing()) {
 				out.write(s.toString() + "\n");

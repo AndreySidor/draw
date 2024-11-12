@@ -1,18 +1,11 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import logic.Drawing;
 import logic.DrawingController;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Graphical user interface for the Drawing editor "Draw"
@@ -30,24 +23,36 @@ public class DrawGUI extends JFrame {
 	 * @author Alex Lagerstedt
 	 * 
 	 */
-	private class DrawingContainer extends JPanel {
+	public class DrawingContainer extends JPanel {
 
 		private static final long serialVersionUID = 0;
 
+		private Drawing drawingPanel;
+
 		public DrawingContainer() {
-			super(new GridBagLayout());
+			setBackground(Color.WHITE);
 		}
 
-		public void setDrawing(Drawing d) {
-			this.removeAll();
-			this.add(d);
-			mouse = new MouseListener(controller, tools);
-			d.addMouseListener(mouse);
-			d.addMouseMotionListener(mouse);
-			setPreferredSize(d.getPreferredSize());
+		public void setDrawing(Drawing drawing) {
+			removeAll();
+			drawingPanel = drawing;
+			setPreferredSize(drawing.getDimension());
 			pack();
 		}
 
+		public BufferedImage getImage() {
+			BufferedImage bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+			print(bi.createGraphics());
+			return bi;
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if (drawingPanel != null) {
+				drawingPanel.draw(g);
+			}
+		}
 	}
 
 	public class StatusBar extends JLabel {
@@ -66,7 +71,7 @@ public class DrawGUI extends JFrame {
 	}
 
 	private DrawingController controller;
-	private DrawingContainer drawingContainer;
+	public DrawingContainer drawingContainer;
 	private MouseListener mouse;
 	private ToolBox tools;
 	private JScrollPane scrollpane;
@@ -96,6 +101,10 @@ public class DrawGUI extends JFrame {
 		controller = new DrawingController(this);
 		tools = new ToolBox(controller);
 		controller.newDrawing(new Dimension(500, 380));
+
+		mouse = new MouseListener(controller, tools);
+		drawingContainer.addMouseListener(mouse);
+		drawingContainer.addMouseMotionListener(mouse);
 
 		// statusBar = new StatusBar();
 

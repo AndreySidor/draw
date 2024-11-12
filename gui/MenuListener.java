@@ -55,7 +55,7 @@ public class MenuListener implements ActionListener {
 
 		else if (cmd.equals("Clear selection")) {
 			controller.clearSelection();
-			controller.getDrawing().repaint();
+			controller.gui.drawingContainer.repaint();
 		}
 
 		else if (cmd.equals("Delete")) {
