@@ -37,7 +37,7 @@ public class ToolBox extends JToolBar implements ActionListener,
 					setVisible(false);
 					tb.setColor(colorChooser.getColor());
 					c.colorSelectedShapes(colorChooser.getColor());
-					c.fireChangingPanel();
+					c.drawingChanged();
 				}
 			});
 			cancelButton.addActionListener(new ActionListener() {
@@ -153,7 +153,7 @@ public class ToolBox extends JToolBar implements ActionListener,
 		}
 		else if (!source.equals(colorbutton)) {
 			c.clearSelection();
-			c.fireChangingPanel();
+			c.drawingChanged();
 		}
 
 		if (source.equals(circle)) {
@@ -204,7 +204,7 @@ public class ToolBox extends JToolBar implements ActionListener,
 		}
 
 		c.toggleFilled();
-		c.fireChangingPanel();
+		c.drawingChanged();
 
 	}
 

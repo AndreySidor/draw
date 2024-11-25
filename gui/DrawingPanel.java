@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class DrawingPanel extends JPanel implements CanRepaintComponent {
+public class DrawingPanel extends JPanel implements OnDrawingChangedListener {
 
     private VectorDrawing vectorDrawing;
 
@@ -39,7 +39,7 @@ public class DrawingPanel extends JPanel implements CanRepaintComponent {
     }
 
     @Override
-    public void repaintComponent() {
+    public void onDrawingChanged() {
         repaint();
     }
 }

@@ -2,16 +2,16 @@ package logic;
 
 import actions.*;
 import actions.base.DrawAction;
-import gui.CanRepaintComponent;
-import gui.ChangingPanel;
+import gui.OnDrawingChangedListener;
+import gui.CanDrawingChange;
 import gui.DrawGUI;
 import shapes.Shape;
 
 import java.awt.*;
 
-public class DrawingController implements ChangingPanel {
+public class DrawingController implements CanDrawingChange {
 
-	private CanRepaintComponent changeablePanel;
+	private OnDrawingChangedListener drawingChangedListener;
 	private VectorDrawing vectorDrawing;
 	private UndoManager undoManager;
 	private DrawGUI gui;
@@ -42,7 +42,7 @@ public class DrawingController implements ChangingPanel {
 		DrawAction action = new DeleteAction(vectorDrawing, vectorDrawing.getSelection());
 		if (action.execute()) {
 			undoManager.addAction(action);
-			fireChangingPanel();
+			drawingChanged();
 		}
 	}
 
@@ -62,7 +62,7 @@ public class DrawingController implements ChangingPanel {
 
 	public void selectAll() {
 		vectorDrawing.selectAll();
-		fireChangingPanel();
+		drawingChanged();
 	}
 
 	public void select(Shape shape) {
@@ -108,30 +108,30 @@ public class DrawingController implements ChangingPanel {
 		if (this.undoManager.canRedo()) {
 			this.undoManager.redo();
 		}
-		fireChangingPanel();
+		drawingChanged();
 	}
 
 	public void undo() {
 		if (this.undoManager.canUndo()) {
 			this.undoManager.undo();
 		}
-		fireChangingPanel();
+		drawingChanged();
 	}
 
 	@Override
-	public void fireChangingPanel() {
-		if (changeablePanel != null) {
-			changeablePanel.repaintComponent();
+	public void drawingChanged() {
+		if (drawingChangedListener != null) {
+			drawingChangedListener.onDrawingChanged();
 		}
 	}
 
 	@Override
-	public void registerChangeablePanel(CanRepaintComponent observer) {
-		changeablePanel = observer;
+	public void addDrawingChangeListener(OnDrawingChangedListener listener) {
+		drawingChangedListener = listener;
 	}
 
 	@Override
-	public void removeChangeablePanel(CanRepaintComponent observer) {
-		changeablePanel = null;
+	public void removeDrawingChangeListener(OnDrawingChangedListener listener) {
+		drawingChangedListener = null;
 	}
 }

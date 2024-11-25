@@ -94,7 +94,7 @@ public class DrawGUI extends JFrame {
 		drawingContainer.drawingPanel.addMouseListener(mouse);
 		drawingContainer.drawingPanel.addMouseMotionListener(mouse);
 
-		controller.registerChangeablePanel(drawingContainer.drawingPanel);
+		controller.addDrawingChangeListener(drawingContainer.drawingPanel);
 
 
 		// statusBar = new StatusBar();
