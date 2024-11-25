@@ -143,12 +143,7 @@ public class MouseListener extends MouseAdapter {
 
 		if (c.getTool() == Tool.SELECT) {
 
-			Point total = new Point(m.getPoint().x - startPos.x, m.getPoint().y
-					- startPos.y);
-
-			if ((total.x != 0) || (total.y != 0)) {
-				c.endOfActionRecording();
-			}
+			c.endOfActionRecording();
 
 		}
 	}
