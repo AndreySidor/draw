@@ -51,6 +51,10 @@ public class Selection implements Iterable<Shape> {
 		return selected.iterator();
 	}
 
+	public ArrayList<Shape> toArrayList() {
+		return new ArrayList<>(selected);
+	}
+
 	public int nShapes() {
 		return selected.size();
 	}

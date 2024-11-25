@@ -67,6 +67,10 @@ public class VectorDrawing implements Iterable<Shape> {
 		shapes.add(s);
 	}
 
+	public void insertShapes(ArrayList<Shape> items) {
+		items.forEach(this::insertShape);
+	}
+
 	public void removeSelected() {
 		selection.forEach(this::removeShape);
 	}

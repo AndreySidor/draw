@@ -31,7 +31,7 @@ public class DeleteAction extends BaseAction {
 	}
 
 	public void undo() {
-		selection.forEach(drawing::insertShape);
+		drawing.insertShapes(selection.toArrayList());
 	}
 
 	public String getDescription() {
