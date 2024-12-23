@@ -6,7 +6,6 @@ import shapes.Shape;
 import shapes.*;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -21,13 +20,14 @@ public class DrawIO {
 		this.panel = panel;
 	}
 
-	public void exportPNG(File file) {
+	public void exportPNG(File file) throws DrawIOException {
 		try {
 			controller.clearSelection();
 			BufferedImage bi = panel.snapshot();
 			ImageIO.write(bi, "png", file);
 		}
 		catch (IOException e) {
+			throw new DrawIOException("Произошла ошибка при экспорте png");
 		}
 	}
 
@@ -39,7 +39,7 @@ public class DrawIO {
 
 	}
 
-	public void open(File f) {
+	public void open(File f) throws DrawIOException {
 		int lineNumber = 1;
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(f));
@@ -91,43 +91,37 @@ public class DrawIO {
 						controller.getVectorDrawing().insertShape(sh);
 					}
 				}
-				catch (ArrayIndexOutOfBoundsException e) {
-					System.out.println("Could not read line " + lineNumber
-							+ " in file \"" + f + "\"");
+				catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+					throw new DrawIOException("Could not read line " + lineNumber + " in file \"" + f + "\"");
 				}
-				catch (NumberFormatException e) {
-					System.out.println("Could not read line " + lineNumber
-							+ " in file \"" + f + "\"");
-				}
-
 			}
-
 			in.close();
 		}
 		catch (IOException e) {
-			e.printStackTrace(System.out);
+			throw new DrawIOException("Произошла ошибка при открытии файла");
 		}
 	}
 
-	public void save(File f) {
+	public void save(File f) throws DrawIOException {
 		VectorDrawing d = controller.getVectorDrawing();
-
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(f));
-
-			out.write(d.getDimension().width + ","
-					+ d.getDimension().height + "\n");
-
+			out.write(d.getDimension().width + "," + d.getDimension().height + "\n");
 			for (Shape s : controller.getVectorDrawing()) {
 				out.write(s.toString() + "\n");
 			}
 			out.close();
-
 		}
 		catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Could not save the drawing.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			throw new DrawIOException("Не получилось сохранить изображение");
 		}
 
+	}
+
+	public class DrawIOException extends Exception {
+
+		public DrawIOException(String message) {
+			super(message);
+		}
 	}
 }

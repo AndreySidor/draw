@@ -19,7 +19,16 @@ public class ExportPNGDialog extends JFileChooser {
 
         File f = this.getSelectedFile();
         if (f != null) {
-            drawIO.exportPNG(f);
+            try {
+                drawIO.exportPNG(f);
+            } catch (DrawIO.DrawIOException e) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
         }
     }
 }

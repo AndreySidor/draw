@@ -21,7 +21,16 @@ public class SaveAsDialog extends JFileChooser {
 
         File f = this.getSelectedFile();
         if (f != null) {
-            drawIO.save(f);
+            try {
+                drawIO.save(f);
+            } catch (DrawIO.DrawIOException e) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
         }
     }
 }

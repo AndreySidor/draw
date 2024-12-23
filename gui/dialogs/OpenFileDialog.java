@@ -17,7 +17,16 @@ public class OpenFileDialog extends JFileChooser {
         this.showOpenDialog(null);
         File f = this.getSelectedFile();
         if (f != null) {
-            drawIO.open(f);
+            try {
+                drawIO.open(f);
+            } catch (DrawIO.DrawIOException e) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
         }
     }
 }
