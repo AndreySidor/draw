@@ -1,13 +1,23 @@
 package gui.dialogs;
 
+import logic.DrawIO;
 import logic.DrawingController;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class NewDrawingDialog extends JDialog {
+public class NewDrawingDialog extends JDialog implements Dialog {
 
-    public NewDrawingDialog(DrawingController controller) {
+    private DrawIO drawIO;
+    private DrawingController controller;
+
+    public NewDrawingDialog(DrawIO drawIO, DrawingController controller) {
+        this.drawIO = drawIO;
+        this.controller = controller;
+    }
+
+    @Override
+    public void showDialog() {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setTitle("Drawing size");
 
@@ -32,6 +42,9 @@ public class NewDrawingDialog extends JDialog {
         this.getContentPane().add(jp);
 
         ok.addActionListener(e -> {
+            if (!controller.getVectorDrawing().isEmpty()) {
+                (new SaveAsDialog(drawIO)).showDialogWithAsk();
+            }
             controller.newDrawing(
                     new Dimension((Integer) widthSpinner.getValue(), (Integer) heightSpinner.getValue())
             );

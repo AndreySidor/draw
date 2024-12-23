@@ -63,6 +63,10 @@ public class VectorDrawing implements Iterable<Shape> {
 		return selection.isEmpty();
 	}
 
+	public Boolean isEmpty() {
+		return shapes.isEmpty();
+	}
+
 	public void insertShape(Shape s) {
 		shapes.add(s);
 	}

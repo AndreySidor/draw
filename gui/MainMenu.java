@@ -18,8 +18,8 @@ import javax.swing.*;
  */
 public class MainMenu extends JMenuBar {
 
-	DrawingController controller;
-	DrawingPanel panel;
+	private DrawingController controller;
+	private DrawingPanel panel;
 
 	public MainMenu(DrawingController controller, DrawingPanel panel) {
 		// Установка контроллера
@@ -67,11 +67,16 @@ public class MainMenu extends JMenuBar {
 		deleteSelectionItems.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
 
 		// Установка действий на кнопки
-		quit.addActionListener(e -> System.exit(0));
-		newDrawing.addActionListener(e -> new NewDrawingDialog(controller));
-		open.addActionListener(e -> new OpenFileDialog(drawIO));
-		saveAs.addActionListener(e -> new SaveAsDialog(drawIO));
-		export.addActionListener(e -> new ExportPNGDialog(drawIO));
+		quit.addActionListener(e -> {
+			if (!controller.getVectorDrawing().isEmpty()) {
+				(new SaveAsDialog(drawIO)).showDialogWithAsk();
+			}
+			System.exit(0);
+		});
+		newDrawing.addActionListener(e -> (new NewDrawingDialog(drawIO, controller)).showDialog());
+		open.addActionListener(e -> (new OpenFileDialog(drawIO, controller)).showDialog());
+		saveAs.addActionListener(e -> (new SaveAsDialog(drawIO)).showDialog());
+		export.addActionListener(e -> (new ExportPNGDialog(drawIO)).showDialog());
 		undo.addActionListener(e -> controller.undo());
 		redo.addActionListener(e -> controller.redo());
 		selectAll.addActionListener(e -> controller.selectAll());

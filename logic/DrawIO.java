@@ -12,8 +12,8 @@ import java.io.*;
 
 public class DrawIO {
 
-	DrawingController controller;
-	DrawingPanel panel;
+	private DrawingController controller;
+	private DrawingPanel panel;
 
 	public DrawIO(DrawingController controller, DrawingPanel panel) {
 		this.controller = controller;
