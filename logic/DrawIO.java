@@ -1,5 +1,6 @@
 package logic;
 
+import gui.DrawingPanel;
 import shapes.Rectangle;
 import shapes.Shape;
 import shapes.*;
@@ -12,11 +13,19 @@ import java.io.*;
 
 public class DrawIO {
 
-	public void export(File f, DrawingController c) {
+	DrawingController controller;
+	DrawingPanel panel;
+
+	public DrawIO(DrawingController controller, DrawingPanel panel) {
+		this.controller = controller;
+		this.panel = panel;
+	}
+
+	public void exportPNG(File file) {
 		try {
-			c.clearSelection();
-			BufferedImage bi = null; // retrieve image
-			ImageIO.write(bi, "png", f);
+			controller.clearSelection();
+			BufferedImage bi = panel.snapshot();
+			ImageIO.write(bi, "png", file);
 		}
 		catch (IOException e) {
 		}
@@ -30,14 +39,14 @@ public class DrawIO {
 
 	}
 
-	public void open(File f, DrawingController c) {
+	public void open(File f) {
 		int lineNumber = 1;
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(f));
 			String str;
 
 			Point p = getPoint(in.readLine());
-			c.newDrawing(new Dimension(p.x, p.y));
+			controller.newDrawing(new Dimension(p.x, p.y));
 
 			while ((str = in.readLine()) != null) {
 				try {
@@ -79,7 +88,7 @@ public class DrawIO {
 						sh
 								.setColor(new Color(Integer.parseInt(parts[3]
 										.trim())));
-						c.getVectorDrawing().insertShape(sh);
+						controller.getVectorDrawing().insertShape(sh);
 					}
 				}
 				catch (ArrayIndexOutOfBoundsException e) {
@@ -100,8 +109,8 @@ public class DrawIO {
 		}
 	}
 
-	public void save(File f, DrawingController c) {
-		VectorDrawing d = c.getVectorDrawing();
+	public void save(File f) {
+		VectorDrawing d = controller.getVectorDrawing();
 
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(f));
@@ -109,7 +118,7 @@ public class DrawIO {
 			out.write(d.getDimension().width + ","
 					+ d.getDimension().height + "\n");
 
-			for (Shape s : c.getVectorDrawing()) {
+			for (Shape s : controller.getVectorDrawing()) {
 				out.write(s.toString() + "\n");
 			}
 			out.close();

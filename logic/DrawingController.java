@@ -2,9 +2,9 @@ package logic;
 
 import actions.*;
 import actions.base.DrawAction;
-import gui.OnDrawingChangedListener;
 import gui.CanDrawingChange;
 import gui.DrawGUI;
+import gui.OnDrawingChangedListener;
 import shapes.Shape;
 
 import java.awt.*;
@@ -71,6 +71,7 @@ public class DrawingController implements CanDrawingChange {
 
 	public void clearSelection() {
 		vectorDrawing.clearSelection();
+		drawingChanged();
 	}
 
 	public Boolean hasSelections() {

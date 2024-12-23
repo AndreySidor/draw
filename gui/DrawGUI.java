@@ -1,7 +1,6 @@
 package gui;
 
 import logic.DrawingController;
-import logic.VectorDrawing;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,19 +25,12 @@ public class DrawGUI extends JFrame {
 
 		private static final long serialVersionUID = 0;
 
-		private DrawingPanel drawingPanel;
+		public DrawingPanel drawingPanel;
 
 		public DrawingContainer() {
 			super(new GridBagLayout());
 			drawingPanel = new DrawingPanel();
 			add(drawingPanel);
-		}
-
-		public void setVectorDrawing(VectorDrawing d) {
-			drawingPanel.removeAll();
-			drawingPanel.setVectorDrawing(d);
-			setPreferredSize(drawingPanel.getPreferredSize());
-			pack();
 		}
 
 	}
@@ -103,8 +95,7 @@ public class DrawGUI extends JFrame {
 		getContentPane().add(scrollpane, BorderLayout.CENTER);
 		// getContentPane().add(statusBar, BorderLayout.SOUTH);
 
-		MenuListener mainMenuListener = new MenuListener(controller);
-		JMenuBar mainMenu = new MainMenu(mainMenuListener);
+		JMenuBar mainMenu = new MainMenu(controller, drawingContainer.drawingPanel);
 		this.setJMenuBar(mainMenu);
 
 		pack();
@@ -118,7 +109,7 @@ public class DrawGUI extends JFrame {
 	 */
 	public void updateDrawing() {
 
-		drawingContainer.setVectorDrawing(controller.getVectorDrawing());
+		drawingContainer.drawingPanel.setVectorDrawing(controller.getVectorDrawing());
 		scrollpane.setPreferredSize(new Dimension(drawingContainer
 				.getPreferredSize().width + 100, drawingContainer
 				.getPreferredSize().height + 100));

@@ -16,8 +16,12 @@ public class DrawingPanel extends JPanel implements OnDrawingChangedListener {
     }
 
     public void setVectorDrawing(VectorDrawing vectorDrawing) {
+        this.removeAll();
         this.vectorDrawing = vectorDrawing;
-        setPreferredSize(vectorDrawing.getDimension());
+        this.setPreferredSize(vectorDrawing.getDimension());
+        if (this.getParent() != null) {
+            this.getParent().setPreferredSize(this.getPreferredSize());
+        }
     }
 
     public BufferedImage snapshot() {
