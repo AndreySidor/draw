@@ -16,14 +16,20 @@ import javax.swing.*;
  * @author Alex Lagerstedt
  * 
  */
-public class MainMenu extends JMenuBar {
+public class MainMenu extends JMenuBar implements OnUndoEnabledListener, OnRedoEnabledListener {
 
 	private DrawingController controller;
 	private DrawingPanel panel;
 
+	private JMenuItem undo;
+
+	private JMenuItem redo;
+
 	public MainMenu(DrawingController controller, DrawingPanel panel) {
 		// Установка контроллера
 		this.controller = controller;
+		controller.addUndoEnabledListener(this);
+		controller.addRedoEnabledListener(this);
 
 		// Установка панели отрисовки
 		this.panel = panel;
@@ -41,8 +47,8 @@ public class MainMenu extends JMenuBar {
 
 		// Undo / Redo
 		JMenu editMenu = new JMenu("Edit");
-		JMenuItem undo = new JMenuItem("Undo", new ImageIcon("img/edit-undo.png"));
-		JMenuItem redo = new JMenuItem("Redo", new ImageIcon("img/edit-redo.png"));
+		undo = new JMenuItem("Undo", new ImageIcon("img/edit-undo.png"));
+		redo = new JMenuItem("Redo", new ImageIcon("img/edit-redo.png"));
 
 		// Работа с выбранными элементами
 		JMenu selectionMenu = new JMenu("Selection");
@@ -83,6 +89,9 @@ public class MainMenu extends JMenuBar {
 		clearSelection.addActionListener(e -> controller.clearSelection());
 		deleteSelectionItems.addActionListener(e -> controller.deleteSelectedShapes());
 
+		undo.setEnabled(false);
+		redo.setEnabled(false);
+
 		// Установка элементов в свои позиции
 		fileMenu.add(newDrawing);
 		fileMenu.add(open);
@@ -106,5 +115,15 @@ public class MainMenu extends JMenuBar {
 		this.add(editMenu);
 		this.add(selectionMenu);
 		this.add(helpMenu);
+	}
+
+	@Override
+	public void onRedoEnabledListener(Boolean enabled) {
+		redo.setEnabled(enabled);
+	}
+
+	@Override
+	public void onUndoEnabledListener(Boolean enabled) {
+		undo.setEnabled(enabled);
 	}
 }

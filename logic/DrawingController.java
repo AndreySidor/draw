@@ -2,16 +2,15 @@ package logic;
 
 import actions.*;
 import actions.base.DrawAction;
-import gui.CanDrawingChange;
-import gui.DrawGUI;
-import gui.OnDrawingChangedListener;
+import gui.*;
 import shapes.Shape;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Stack;
 
-public class DrawingController implements CanDrawingChange {
+public class DrawingController implements CanDrawingChange, OnUndoManagerChangedListener {
 
-	private OnDrawingChangedListener drawingChangedListener;
 	private VectorDrawing vectorDrawing;
 	private UndoManager undoManager;
 	private DrawGUI gui;
@@ -20,6 +19,7 @@ public class DrawingController implements CanDrawingChange {
 	public DrawingController(DrawGUI g) {
 		vectorDrawing = null;
 		undoManager = new UndoManager();
+		undoManager.addUndoManagerChangedListener(this);
 		gui = g;
 		tool = Tool.LINE;
 	}
@@ -95,9 +95,10 @@ public class DrawingController implements CanDrawingChange {
 	}
 
 	public void newDrawing(Dimension size) {
-		vectorDrawing = new VectorDrawing(size);
 		if (gui != null) {
+			vectorDrawing = new VectorDrawing(size);
 			gui.updateDrawing();
+			undoManager.clear();
 		}
 	}
 
@@ -126,6 +127,11 @@ public class DrawingController implements CanDrawingChange {
 		}
 	}
 
+	private OnDrawingChangedListener drawingChangedListener;
+
+	private ArrayList<OnUndoEnabledListener> undoEnabledListeners = new ArrayList<>();
+	private ArrayList<OnRedoEnabledListener> redoEnabledListeners = new ArrayList<>();
+
 	@Override
 	public void addDrawingChangeListener(OnDrawingChangedListener listener) {
 		drawingChangedListener = listener;
@@ -134,5 +140,31 @@ public class DrawingController implements CanDrawingChange {
 	@Override
 	public void removeDrawingChangeListener(OnDrawingChangedListener listener) {
 		drawingChangedListener = null;
+	}
+
+	public void addUndoEnabledListener(OnUndoEnabledListener listener) {
+		undoEnabledListeners.add(listener);
+	}
+
+	public void removeUndoEnabledListener(OnUndoEnabledListener listener) {
+		undoEnabledListeners.remove(listener);
+	}
+
+	public void addRedoEnabledListener(OnRedoEnabledListener listener) {
+		redoEnabledListeners.add(listener);
+	}
+
+	public void removeRedoEnabledListener(OnRedoEnabledListener listener) {
+		redoEnabledListeners.remove(listener);
+	}
+
+	@Override
+	public void onUndoManagerChanged(Stack<DrawAction> undo, Stack<DrawAction> redo) {
+		undoEnabledListeners.forEach(l -> {
+			l.onUndoEnabledListener(!undo.isEmpty());
+		});
+		redoEnabledListeners.forEach(l -> {
+			l.onRedoEnabledListener(!redo.isEmpty());
+		});
 	}
 }

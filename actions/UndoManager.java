@@ -1,7 +1,9 @@
 package actions;
 
 import actions.base.DrawAction;
+import logic.OnUndoManagerChangedListener;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -15,7 +17,7 @@ import java.util.Stack;
  * !!!!!!!!!!!!!!!!
  * 
  */
-public class UndoManager {
+public class UndoManager implements UndoManagerChangeEvent {
 
 	// Undo and redo stacks which contain the UndoableAction objects
 	// When a new action is made it is put in the undo stack. When an operation
@@ -50,6 +52,7 @@ public class UndoManager {
 			}
 		}
 		this.undoStack.push(action);
+		undoManagerChanged();
 	}
 
 	/**
@@ -89,6 +92,7 @@ public class UndoManager {
 		DrawAction action = this.redoStack.pop();
 		action.redo();
 		this.undoStack.push(action);
+		undoManagerChanged();
 	}
 
 	/**
@@ -99,6 +103,31 @@ public class UndoManager {
 		DrawAction action = this.undoStack.pop();
 		action.undo();
 		this.redoStack.push(action);
+		undoManagerChanged();
 	}
 
+	public void clear() {
+		undoStack.clear();
+		redoStack.clear();
+		undoManagerChanged();
+	}
+
+	private ArrayList<OnUndoManagerChangedListener> listeners = new ArrayList<>();
+
+	@Override
+	public void undoManagerChanged() {
+		listeners.forEach(l -> {
+			l.onUndoManagerChanged(undoStack, redoStack);
+		});
+	}
+
+	@Override
+	public void addUndoManagerChangedListener(OnUndoManagerChangedListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removeUndoManagerChangedListener(OnUndoManagerChangedListener listener) {
+		listeners.remove(listener);
+	}
 }
